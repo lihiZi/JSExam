@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="table.css">
+</head>
+
+<body>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+        <tbody id="appendBody">
+        </tbody>
+    </table>
+    <br>
+    <form id="form">
+        Name: <input id="name" type="text" value="">
+        Email: <input id="email" type="text" value="">
+        Phone: <input id="phone" type="text" value="">
+        <br>
+        <button>Submit!</button>
+    </form>
+    <script src="table.js"></script>
+    <script>
+        console.log(contacts);
+        let tableBody = document.getElementById("appendBody");
+        contacts.forEach(data => {
+            let values = Object.values(data);
+            const fav = values.length - 1;
+            let tr = document.createElement("TR");
+            let deleteBtn = document.createElement("Button");
+            let editBtn = document.createElement("Button");
+            deleteBtn.innerHTML = "Remove";
+            editBtn.innerHTML = "Edit";
+            deleteBtn.addEventListener("click", function () {
+                this.parentElement.remove();
+            });
+            editBtn.addEventListener("click", function () {
+                let form = document.getElementById("form");
+                form.style.display = "flex";
+                const contactData = this.parentElement.childNodes;
+                let name = document.getElementById("name");
+                let email = document.getElementById("email");
+                let phone = document.getElementById("phone");
+                name.value = contactData[0].innerHTML;
+                email.value = contactData[1].innerHTML;
+                phone.value = contactData[2].innerHTML;
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    if (!(name.value.length === 0 || email.value.length === 0 || phone.value.length === 0)) {
+                        contactData[0].innerHTML = name.value;
+                        contactData[1].innerHTML = email.value;
+                        contactData[2].innerHTML = phone.value;
+                        form.style.display = "none";
+                    } else {
+                        window.alert("Input should be bigger than 0");
+                    }
+                });
+            });
+
+            values.pop();
+            values.forEach(contact => {
+                let td = document.createElement("TD");
+                td.innerHTML = contact;
+                tr.appendChild(td);
+            });
+            tr.appendChild(deleteBtn);
+            tr.appendChild(editBtn);
+            tableBody.appendChild(tr);
+        });
+        const deleteRow = () => {
+            console.log(this);
+        }
+    </script>
+</body>
+
+</html>
